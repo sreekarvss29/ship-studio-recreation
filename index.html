@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ship — Cohort 1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Cursor glow -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- Grain overlay -->
+  <div class="grain-overlay"></div>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <span class="logo-text">SHIP</span>
+        <span class="logo-dot"></span>
+      </a>
+      <div class="nav-links">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#how" class="nav-link">How It Works</a>
+        <a href="#founders" class="nav-link">Founders</a>
+        <a href="#testimonials" class="nav-link">Testimonials</a>
+        <a href="#apply" class="nav-link nav-link-cta">Apply Now</a>
+      </div>
+      <button class="nav-menu-btn" id="menuBtn" aria-label="Menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about" class="mobile-link">About</a>
+    <a href="#how" class="mobile-link">How It Works</a>
+    <a href="#founders" class="mobile-link">Founders</a>
+    <a href="#testimonials" class="mobile-link">Testimonials</a>
+    <a href="#apply" class="mobile-link mobile-link-cta">Apply Now</a>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-radial"></div>
+
+    <!-- Floating orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge reveal">
+        <span class="badge-pulse"></span>
+        <span>Cohort 1 — Now Open</span>
+      </div>
+
+      <h1 class="hero-title">
+        <span class="title-line reveal">Not an accelerator.</span>
+        <span class="title-line title-italic reveal">A working room.</span>
+      </h1>
+
+      <p class="hero-sub reveal">
+        12 founders. 5 weeks. Build in public. Ship what matters.
+        <br />High signal. Low noise. Pure execution.
+      </p>
+
+      <div class="hero-ctas reveal">
+        <a href="#apply" class="btn btn-primary">
+          <span>Apply for Cohort 1</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <a href="#about" class="btn btn-ghost">Learn More</a>
+      </div>
+
+      <div class="hero-stats reveal">
+        <div class="stat">
+          <span class="stat-num" data-count="12">0</span>
+          <span class="stat-label">Founders</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num" data-count="5">0</span>
+          <span class="stat-label">Weeks</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num" data-count="1">0</span>
+          <span class="stat-label">Goal: Ship</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator reveal">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- Marquee -->
+  <section class="marquee-section">
+    <div class="marquee-track">
+      <div class="marquee-content">
+        <span>BUILD IN PUBLIC</span>
+        <span class="marquee-star">✦</span>
+        <span>SHIP FAST</span>
+        <span class="marquee-star">✦</span>
+        <span>STAY FOCUSED</span>
+        <span class="marquee-star">✦</span>
+        <span>NO FLUFF</span>
+        <span class="marquee-star">✦</span>
+        <span>REAL WORK</span>
+        <span class="marquee-star">✦</span>
+        <span>BUILD IN PUBLIC</span>
+        <span class="marquee-star">✦</span>
+        <span>SHIP FAST</span>
+        <span class="marquee-star">✦</span>
+        <span>STAY FOCUSED</span>
+        <span class="marquee-star">✦</span>
+        <span>NO FLUFF</span>
+        <span class="marquee-star">✦</span>
+        <span>REAL WORK</span>
+        <span class="marquee-star">✦</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section about" id="about">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag reveal">[ 01 — ABOUT ]</span>
+        <h2 class="section-title reveal">
+          Execution over
+          <span class="text-gold italic">optics.</span>
+        </h2>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-card reveal">
+          <div class="about-card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <h3>No Pitch Decks</h3>
+          <p>We don't rehearse narratives. We build products. Every session is about moving the needle on what you're shipping.</p>
+        </div>
+
+        <div class="about-card reveal">
+          <div class="about-card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+            </svg>
+          </div>
+          <h3>5-Week Sprint</h3>
+          <p>Tight timelines force clarity. You'll define your scope, build relentlessly, and ship publicly before the cohort ends.</p>
+        </div>
+
+        <div class="about-card reveal">
+          <div class="about-card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h3>12 Founders</h3>
+          <p>Small by design. Everyone knows each other's build. Accountability isn't a feature — it's the culture.</p>
+        </div>
+
+        <div class="about-card reveal">
+          <div class="about-card-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+          <h3>Build in Public</h3>
+          <p>Transparency is the accelerant. Share your progress, get real feedback, and let your work speak louder than your words.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it Works -->
+  <section class="section how" id="how">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag reveal">[ 02 — PROCESS ]</span>
+        <h2 class="section-title reveal">
+          Five weeks of
+          <span class="text-gold italic">relentless</span> building.
+        </h2>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-line"></div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-marker">
+            <span class="timeline-week">W1</span>
+          </div>
+          <div class="timeline-content">
+            <h3>Define & Commit</h3>
+            <p>Scope your build. Define what "shipped" looks like. Make a public commitment to your cohort.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-marker">
+            <span class="timeline-week">W2</span>
+          </div>
+          <div class="timeline-content">
+            <h3>Build & Iterate</h3>
+            <p>Heads down. Daily check-ins. Weekly demos. Get feedback from founders who understand the grind.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-marker">
+            <span class="timeline-week">W3</span>
+          </div>
+          <div class="timeline-content">
+            <h3>Refine & Stress-Test</h3>
+            <p>Put your build in front of real users. Stress-test your assumptions. Iterate with urgency.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-marker">
+            <span class="timeline-week">W4</span>
+          </div>
+          <div class="timeline-content">
+            <h3>Polish & Prepare</h3>
+            <p>Tighten the edges. Prepare your launch narrative. Get your build ready for the world.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="timeline-marker">
+            <span class="timeline-week">W5</span>
+          </div>
+          <div class="timeline-content">
+            <h3>Ship It</h3>
+            <p>Launch publicly. Share your story. Celebrate with 11 other founders who just did the same.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Founders / Social Proof -->
+  <section class="section founders" id="founders">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag reveal">[ 03 — FOUNDERS ]</span>
+        <h2 class="section-title reveal">
+          Built for founders who
+          <span class="text-gold italic">ship.</span>
+        </h2>
+        <p class="section-sub reveal">
+          We select for builders — people with conviction, taste, and an irrational bias toward action.
+        </p>
+      </div>
+
+      <div class="founders-grid">
+        <div class="founder-card reveal">
+          <div class="founder-avatar">
+            <div class="avatar-placeholder">S</div>
+          </div>
+          <h4>Sarah Chen</h4>
+          <p class="founder-role">Building AI Design Tools</p>
+          <p class="founder-quote">"Shipped my MVP in 3 weeks. The accountability changed everything."</p>
+        </div>
+
+        <div class="founder-card reveal">
+          <div class="founder-avatar">
+            <div class="avatar-placeholder">M</div>
+          </div>
+          <h4>Marcus Rivera</h4>
+          <p class="founder-role">Fintech Infrastructure</p>
+          <p class="founder-quote">"No fluff. Just builders pushing each other to ship faster."</p>
+        </div>
+
+        <div class="founder-card reveal">
+          <div class="founder-avatar">
+            <div class="avatar-placeholder">A</div>
+          </div>
+          <h4>Aisha Patel</h4>
+          <p class="founder-role">Developer Productivity</p>
+          <p class="founder-quote">"The best 5 weeks of my startup journey. Period."</p>
+        </div>
+
+        <div class="founder-card reveal">
+          <div class="founder-avatar">
+            <div class="avatar-placeholder">J</div>
+          </div>
+          <h4>James Okonkwo</h4>
+          <p class="founder-role">Health Tech Platform</p>
+          <p class="founder-quote">"Ship forced me to stop planning and start building."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section testimonials" id="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag reveal">[ 04 — VOICES ]</span>
+        <h2 class="section-title reveal">
+          What founders
+          <span class="text-gold italic">say.</span>
+        </h2>
+      </div>
+
+      <div class="testimonial-carousel">
+        <div class="testimonial-card active reveal" id="testimonial-0">
+          <div class="quote-mark">"</div>
+          <blockquote>
+            Ship isn't about raising money or perfecting your pitch. It's about doing the hardest thing in startups — actually building and launching something real. That's what makes it different from everything else out there.
+          </blockquote>
+          <div class="testimonial-author">
+            <div class="author-avatar">K</div>
+            <div>
+              <strong>Kai Nakamura</strong>
+              <span>Cohort 1 Founder</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal" id="testimonial-1">
+          <div class="quote-mark">"</div>
+          <blockquote>
+            I've been in accelerators, incubators, and fellowships. Ship is the only program that actually made me ship. The small cohort size means you can't hide. Everyone knows if you're building or just talking.
+          </blockquote>
+          <div class="testimonial-author">
+            <div class="author-avatar">L</div>
+            <div>
+              <strong>Luna Vasquez</strong>
+              <span>Cohort 1 Founder</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal" id="testimonial-2">
+          <div class="quote-mark">"</div>
+          <blockquote>
+            The build-in-public aspect was terrifying at first, but it became my superpower. Real-time feedback from people who genuinely care about your success — that's rare and powerful.
+          </blockquote>
+          <div class="testimonial-author">
+            <div class="author-avatar">D</div>
+            <div>
+              <strong>David Park</strong>
+              <span>Cohort 1 Founder</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-dots">
+        <button class="dot active" data-index="0" aria-label="Testimonial 1"></button>
+        <button class="dot" data-index="1" aria-label="Testimonial 2"></button>
+        <button class="dot" data-index="2" aria-label="Testimonial 3"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section cta-section" id="apply">
+    <div class="container">
+      <div class="cta-box reveal">
+        <div class="cta-glow"></div>
+        <span class="cta-tag">Applications Open</span>
+        <h2 class="cta-title">
+          Ready to <span class="text-gold italic">ship?</span>
+        </h2>
+        <p class="cta-sub">
+          Cohort 1 starts soon. 12 spots. We're looking for founders with conviction, a clear build, and an obsession with execution.
+        </p>
+        <a href="#" class="btn btn-primary btn-lg">
+          <span>Apply for Cohort 1</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <p class="cta-note">Free to join. Selective admission.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="logo-text">SHIP</span>
+          <span class="logo-dot"></span>
+          <p class="footer-tagline">Execution over optics.</p>
+        </div>
+        <div class="footer-links">
+          <a href="#">Twitter</a>
+          <a href="#">LinkedIn</a>
+          <a href="#">Email</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Ship Studio. All rights reserved.</p>
+        <p class="footer-credit">
+          Crafted with obsessive attention to detail.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
