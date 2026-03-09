@@ -1,5 +1,6 @@
 /* =============================================
    SHIP STUDIO — Premium Dark Theme
+   Full-page network background + glassmorphism
    ============================================= */
 
 /* --- Reset & Base --- */
@@ -10,21 +11,26 @@
 }
 
 :root {
-  --bg: #080808;
-  --surface: #111111;
-  --surface-2: #1a1a1a;
-  --border: #222222;
-  --border-light: #2a2a2a;
+  --bg: #0a0a0a;
+  --bg-rgb: 10, 10, 10;
+  --surface: rgba(255, 255, 255, 0.03);
+  --surface-solid: #111111;
+  --surface-2: rgba(255, 255, 255, 0.05);
+  --glass: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-hover: rgba(255, 255, 255, 0.07);
+  --border: rgba(255, 255, 255, 0.06);
+  --border-light: rgba(255, 255, 255, 0.1);
   --text: #f5f5f5;
-  --text-secondary: #999999;
+  --text-secondary: #a0a0a0;
   --text-muted: #666666;
   --gold: #d4a853;
   --gold-light: #e8c97a;
   --gold-dark: #b8903f;
   --gold-glow: rgba(212, 168, 83, 0.15);
   --gold-glow-strong: rgba(212, 168, 83, 0.3);
-  --radius: 12px;
-  --radius-lg: 20px;
+  --radius: 16px;
+  --radius-lg: 24px;
   --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   --transition-slow: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -66,11 +72,24 @@ a { color: inherit; text-decoration: none; }
 .italic { font-style: italic; }
 .text-gold { color: var(--gold); }
 
+/* --- Full-Page Grid Pattern --- */
+.grid-pattern {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.6;
+}
+
 /* --- Network Canvas --- */
 #networkCanvas {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
   pointer-events: none;
   width: 100vw;
   height: 100vh;
@@ -79,12 +98,12 @@ a { color: inherit; text-decoration: none; }
 /* --- Cursor Glow --- */
 .cursor-glow {
   position: fixed;
-  width: 600px;
-  height: 600px;
+  width: 800px;
+  height: 800px;
   border-radius: 50%;
   pointer-events: none;
-  z-index: 0;
-  background: radial-gradient(circle, rgba(212, 168, 83, 0.04) 0%, transparent 70%);
+  z-index: 1;
+  background: radial-gradient(circle, rgba(212, 168, 83, 0.06) 0%, transparent 60%);
   transform: translate(-50%, -50%);
   transition: opacity 0.3s;
   will-change: left, top;
@@ -96,10 +115,21 @@ a { color: inherit; text-decoration: none; }
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.025;
+  opacity: 0.02;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 128px 128px;
+}
+
+/* --- All Sections Transparent (network shows through) --- */
+.hero,
+.marquee-section,
+.section,
+.cta-section,
+.footer {
+  position: relative;
+  z-index: 2;
+  background: transparent;
 }
 
 /* --- Navigation --- */
@@ -114,30 +144,11 @@ a { color: inherit; text-decoration: none; }
   background: transparent;
 }
 
-/* Ensure content sits above canvas */
-.marquee-section,
-.section,
-.footer {
-  position: relative;
-  z-index: 2;
-  background: var(--bg);
-}
-
-.hero {
-  background: transparent;
-  z-index: 1;
-}
-
-/* Fade transition between hero (network visible) and rest of page */
-.marquee-section {
-  box-shadow: 0 -40px 60px 20px var(--bg);
-}
-
 .nav.scrolled {
   padding: 12px 0;
-  background: rgba(8, 8, 8, 0.85);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-bottom: 1px solid var(--border);
 }
 
@@ -254,7 +265,7 @@ a { color: inherit; text-decoration: none; }
   position: fixed;
   inset: 0;
   z-index: 999;
-  background: rgba(8, 8, 8, 0.97);
+  background: rgba(10, 10, 10, 0.95);
   backdrop-filter: blur(40px);
   display: flex;
   flex-direction: column;
@@ -310,14 +321,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .hero-grid-bg {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+  display: none; /* replaced by full-page grid */
 }
 
 /* --- Compass Rings --- */
@@ -326,8 +330,8 @@ a { color: inherit; text-decoration: none; }
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: min(90vw, 800px);
-  height: min(90vw, 800px);
+  width: min(95vw, 900px);
+  height: min(95vw, 900px);
   z-index: 1;
   pointer-events: none;
 }
@@ -376,20 +380,19 @@ a { color: inherit; text-decoration: none; }
   top: -20%;
   left: 50%;
   transform: translateX(-50%);
-  width: 800px;
-  height: 800px;
+  width: 900px;
+  height: 900px;
   border-radius: 50%;
   background: radial-gradient(circle, var(--gold-glow) 0%, transparent 60%);
-  filter: blur(80px);
+  filter: blur(100px);
   animation: breathe 8s ease-in-out infinite;
-  opacity: 0.25;
+  opacity: 0.2;
 }
 
 @keyframes breathe {
-  0%, 100% { opacity: 0.2; transform: translateX(-50%) scale(1); }
-  50% { opacity: 0.35; transform: translateX(-50%) scale(1.05); }
+  0%, 100% { opacity: 0.15; transform: translateX(-50%) scale(1); }
+  50% { opacity: 0.3; transform: translateX(-50%) scale(1.05); }
 }
-
 
 .hero-content {
   text-align: center;
@@ -404,14 +407,15 @@ a { color: inherit; text-decoration: none; }
   gap: 10px;
   padding: 8px 20px;
   border-radius: 100px;
-  border: 1px solid var(--border-light);
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
   font-size: 12px;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--text-secondary);
   margin-bottom: 40px;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .badge-pulse {
@@ -428,9 +432,9 @@ a { color: inherit; text-decoration: none; }
 }
 
 .hero-title {
-  font-size: clamp(42px, 7vw, 80px);
+  font-size: clamp(42px, 7vw, 84px);
   font-weight: 300;
-  line-height: 1.1;
+  line-height: 1.08;
   letter-spacing: -2px;
   margin-bottom: 28px;
 }
@@ -505,14 +509,17 @@ a { color: inherit; text-decoration: none; }
 }
 
 .btn-ghost {
-  background: transparent;
+  background: var(--glass);
   color: var(--text-secondary);
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .btn-ghost:hover {
   color: var(--text);
-  border-color: var(--text-muted);
+  border-color: var(--border-light);
+  background: var(--glass-hover);
   transform: translateY(-2px);
 }
 
@@ -588,7 +595,9 @@ a { color: inherit; text-decoration: none; }
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   overflow: hidden;
-  background: var(--surface);
+  background: rgba(var(--bg-rgb), 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .marquee-track {
@@ -624,6 +633,18 @@ a { color: inherit; text-decoration: none; }
   position: relative;
 }
 
+/* Subtle section divider lines */
+.section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-light), transparent);
+}
+
 .section-header {
   text-align: center;
   margin-bottom: 80px;
@@ -639,7 +660,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .section-title {
-  font-size: clamp(32px, 5vw, 52px);
+  font-size: clamp(32px, 5vw, 56px);
   font-weight: 300;
   letter-spacing: -1px;
   line-height: 1.2;
@@ -654,7 +675,7 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.7;
 }
 
-/* --- About Cards --- */
+/* --- About Cards (Glassmorphism) --- */
 .about-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -663,12 +684,14 @@ a { color: inherit; text-decoration: none; }
 
 .about-card {
   padding: 40px;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius);
   transition: var(--transition);
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .about-card::before {
@@ -685,8 +708,9 @@ a { color: inherit; text-decoration: none; }
 
 .about-card:hover {
   border-color: var(--border-light);
+  background: var(--glass-hover);
   transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
 .about-card:hover::before { opacity: 1; }
@@ -699,7 +723,7 @@ a { color: inherit; text-decoration: none; }
   justify-content: center;
   border-radius: 12px;
   background: var(--surface-2);
-  border: 1px solid var(--border);
+  border: 1px solid var(--glass-border);
   margin-bottom: 20px;
   color: var(--gold);
   transition: var(--transition);
@@ -758,8 +782,10 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg);
-  border: 1px solid var(--border);
+  background: rgba(var(--bg-rgb), 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
   border-radius: 50%;
   transition: var(--transition);
 }
@@ -790,7 +816,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 300;
 }
 
-/* --- Founders Grid --- */
+/* --- Founders Grid (Glassmorphism) --- */
 .founders-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -800,16 +826,19 @@ a { color: inherit; text-decoration: none; }
 .founder-card {
   padding: 32px 24px;
   text-align: center;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius);
   transition: var(--transition);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .founder-card:hover {
   border-color: var(--border-light);
+  background: var(--glass-hover);
   transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
 .founder-avatar {
@@ -856,7 +885,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 300;
 }
 
-/* --- Testimonials --- */
+/* --- Testimonials (Glassmorphism) --- */
 .testimonial-carousel {
   max-width: 700px;
   margin: 0 auto;
@@ -868,9 +897,11 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
   inset: 0;
   padding: 48px;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   opacity: 0;
   transform: translateY(20px) scale(0.98);
   transition: var(--transition-slow);
@@ -941,7 +972,7 @@ blockquote {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--border-light);
+  background: var(--glass-border);
   border: none;
   cursor: pointer;
   transition: var(--transition);
@@ -955,7 +986,7 @@ blockquote {
 
 .dot:hover { background: var(--text-muted); }
 
-/* --- CTA Section --- */
+/* --- CTA Section (Glassmorphism) --- */
 .cta-section {
   padding: 100px 0 140px;
 }
@@ -964,10 +995,12 @@ blockquote {
   position: relative;
   text-align: center;
   padding: 80px 40px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  background: var(--surface);
+  background: var(--glass);
   overflow: hidden;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .cta-glow {
@@ -1116,6 +1149,10 @@ blockquote {
   .founders-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .compass-wrapper {
+    width: min(95vw, 700px);
+    height: min(95vw, 700px);
+  }
 }
 
 @media (max-width: 768px) {
@@ -1147,6 +1184,11 @@ blockquote {
 
   .footer-top { flex-direction: column; gap: 24px; }
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+
+  .compass-wrapper {
+    width: min(100vw, 500px);
+    height: min(100vw, 500px);
+  }
 }
 
 @media (max-width: 480px) {
