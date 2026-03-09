@@ -4,6 +4,217 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  // --- Network Canvas Animation ---
+  const canvas = document.getElementById('networkCanvas');
+  const ctx = canvas.getContext('2d');
+  let canvasW, canvasH;
+  let networkMouse = { x: -9999, y: -9999 };
+
+  const NET_CONFIG = {
+    particleCount: 150,
+    connectionDistance: 200,
+    mouseRadius: 280,
+    particleSize: { min: 1.2, max: 3 },
+    speed: { min: 0.1, max: 0.4 },
+    baseAlpha: 0.5,
+    lineAlpha: 0.15,
+    mouseLineAlpha: 0.4,
+    pulseSpeed: 0.0015,
+    colors: {
+      particle: [212, 168, 83],      // gold
+      particleDim: [120, 120, 120],   // gray for far particles
+      line: [212, 168, 83],           // gold lines
+      mouseLine: [232, 201, 122],     // bright gold near mouse
+    }
+  };
+
+  let particles = [];
+
+  function resizeCanvas() {
+    canvasW = canvas.width = window.innerWidth;
+    canvasH = canvas.height = window.innerHeight;
+  }
+
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+
+    reset() {
+      this.x = Math.random() * canvasW;
+      this.y = Math.random() * canvasH;
+      this.size = NET_CONFIG.particleSize.min + Math.random() * (NET_CONFIG.particleSize.max - NET_CONFIG.particleSize.min);
+      this.speedX = (Math.random() - 0.5) * 2 * NET_CONFIG.speed.max;
+      this.speedY = (Math.random() - 0.5) * 2 * NET_CONFIG.speed.max;
+      const speed = Math.sqrt(this.speedX ** 2 + this.speedY ** 2);
+      if (speed < NET_CONFIG.speed.min) {
+        const scale = NET_CONFIG.speed.min / speed;
+        this.speedX *= scale;
+        this.speedY *= scale;
+      }
+      this.phase = Math.random() * Math.PI * 2;
+      this.pulseOffset = Math.random() * Math.PI * 2;
+    }
+
+    update(time) {
+      this.x += this.speedX;
+      this.y += this.speedY;
+
+      // Wrap around edges with padding
+      if (this.x < -50) this.x = canvasW + 50;
+      if (this.x > canvasW + 50) this.x = -50;
+      if (this.y < -50) this.y = canvasH + 50;
+      if (this.y > canvasH + 50) this.y = -50;
+
+      // Mouse repulsion (subtle)
+      const dx = this.x - networkMouse.x;
+      const dy = this.y - networkMouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < NET_CONFIG.mouseRadius && dist > 0) {
+        const force = (NET_CONFIG.mouseRadius - dist) / NET_CONFIG.mouseRadius * 0.5;
+        this.x += (dx / dist) * force;
+        this.y += (dy / dist) * force;
+      }
+
+      // Pulsing alpha
+      this.alpha = NET_CONFIG.baseAlpha + Math.sin(time * NET_CONFIG.pulseSpeed + this.pulseOffset) * 0.15;
+    }
+
+    draw() {
+      const distToMouse = Math.sqrt(
+        (this.x - networkMouse.x) ** 2 + (this.y - networkMouse.y) ** 2
+      );
+      const mouseInfluence = Math.max(0, 1 - distToMouse / NET_CONFIG.mouseRadius);
+
+      // Blend between dim gray and gold based on mouse proximity
+      const c = NET_CONFIG.colors.particle;
+      const cd = NET_CONFIG.colors.particleDim;
+      const r = cd[0] + (c[0] - cd[0]) * (0.3 + mouseInfluence * 0.7);
+      const g = cd[1] + (c[1] - cd[1]) * (0.3 + mouseInfluence * 0.7);
+      const b = cd[2] + (c[2] - cd[2]) * (0.3 + mouseInfluence * 0.7);
+
+      const alpha = this.alpha + mouseInfluence * 0.5;
+      const size = this.size + mouseInfluence * 1.5;
+
+      // Glow for particles near mouse
+      if (mouseInfluence > 0.3) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, size * 3, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${mouseInfluence * 0.08})`;
+        ctx.fill();
+      }
+
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+      ctx.fill();
+    }
+  }
+
+  function initParticles() {
+    particles = [];
+    for (let i = 0; i < NET_CONFIG.particleCount; i++) {
+      particles.push(new Particle());
+    }
+  }
+
+  function drawConnections(time) {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < NET_CONFIG.connectionDistance) {
+          const alpha = (1 - dist / NET_CONFIG.connectionDistance);
+
+          // Check if either particle is near mouse for enhanced lines
+          const midX = (particles[i].x + particles[j].x) / 2;
+          const midY = (particles[i].y + particles[j].y) / 2;
+          const mouseDistToLine = Math.sqrt(
+            (midX - networkMouse.x) ** 2 + (midY - networkMouse.y) ** 2
+          );
+          const mouseInfluence = Math.max(0, 1 - mouseDistToLine / (NET_CONFIG.mouseRadius * 1.5));
+
+          const c = NET_CONFIG.colors.line;
+          const cm = NET_CONFIG.colors.mouseLine;
+          const r = c[0] + (cm[0] - c[0]) * mouseInfluence;
+          const g = c[1] + (cm[1] - c[1]) * mouseInfluence;
+          const b = c[2] + (cm[2] - c[2]) * mouseInfluence;
+
+          const lineAlpha = alpha * (NET_CONFIG.lineAlpha + mouseInfluence * NET_CONFIG.mouseLineAlpha);
+
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${lineAlpha})`;
+          ctx.lineWidth = 0.5 + mouseInfluence * 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw lines from mouse to nearby particles
+    for (let i = 0; i < particles.length; i++) {
+      const dx = particles[i].x - networkMouse.x;
+      const dy = particles[i].y - networkMouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < NET_CONFIG.mouseRadius) {
+        const alpha = (1 - dist / NET_CONFIG.mouseRadius) * 0.2;
+        const c = NET_CONFIG.colors.mouseLine;
+        ctx.beginPath();
+        ctx.moveTo(networkMouse.x, networkMouse.y);
+        ctx.lineTo(particles[i].x, particles[i].y);
+        ctx.strokeStyle = `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${alpha})`;
+        ctx.lineWidth = 0.4;
+        ctx.stroke();
+      }
+    }
+  }
+
+  function animateNetwork(time) {
+    ctx.clearRect(0, 0, canvasW, canvasH);
+
+    particles.forEach(p => p.update(time));
+    drawConnections(time);
+    particles.forEach(p => p.draw());
+
+    requestAnimationFrame(animateNetwork);
+  }
+
+  // Track mouse for network
+  document.addEventListener('mousemove', (e) => {
+    networkMouse.x = e.clientX;
+    networkMouse.y = e.clientY;
+  });
+
+  document.addEventListener('mouseleave', () => {
+    networkMouse.x = -9999;
+    networkMouse.y = -9999;
+  });
+
+  window.addEventListener('resize', () => {
+    resizeCanvas();
+    // Re-init if particle count needs adjusting for screen size
+    if (canvasW < 768) {
+      NET_CONFIG.particleCount = 60;
+      NET_CONFIG.connectionDistance = 140;
+    } else {
+      NET_CONFIG.particleCount = 150;
+      NET_CONFIG.connectionDistance = 200;
+    }
+    initParticles();
+  });
+
+  resizeCanvas();
+  if (canvasW < 768) {
+    NET_CONFIG.particleCount = 40;
+    NET_CONFIG.connectionDistance = 120;
+  }
+  initParticles();
+  requestAnimationFrame(animateNetwork);
+
   // --- Cursor Glow ---
   const glow = document.getElementById('cursorGlow');
   let mouseX = 0, mouseY = 0, glowX = 0, glowY = 0;

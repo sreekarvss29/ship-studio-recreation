@@ -8,6 +8,9 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- Network canvas background -->
+  <canvas id="networkCanvas"></canvas>
+
   <!-- Cursor glow -->
   <div class="cursor-glow" id="cursorGlow"></div>
 
@@ -48,10 +51,72 @@
     <div class="hero-grid-bg"></div>
     <div class="hero-radial"></div>
 
-    <!-- Floating orbs -->
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
+    <!-- Compass Ring -->
+    <div class="compass-wrapper">
+      <!-- Outer ring - slow spin -->
+      <div class="compass-ring compass-ring-outer">
+        <svg viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="400" cy="400" r="390" stroke="rgba(212,168,83,0.08)" stroke-width="1" stroke-dasharray="8 12"/>
+          <circle cx="400" cy="400" r="360" stroke="rgba(212,168,83,0.05)" stroke-width="0.5"/>
+          <!-- Tick marks -->
+          <line x1="400" y1="10" x2="400" y2="40" stroke="rgba(212,168,83,0.2)" stroke-width="1"/>
+          <line x1="400" y1="760" x2="400" y2="790" stroke="rgba(212,168,83,0.2)" stroke-width="1"/>
+          <line x1="10" y1="400" x2="40" y2="400" stroke="rgba(212,168,83,0.2)" stroke-width="1"/>
+          <line x1="760" y1="400" x2="790" y2="400" stroke="rgba(212,168,83,0.2)" stroke-width="1"/>
+          <!-- Diagonal ticks -->
+          <line x1="121" y1="121" x2="142" y2="142" stroke="rgba(212,168,83,0.1)" stroke-width="0.5"/>
+          <line x1="679" y1="121" x2="658" y2="142" stroke="rgba(212,168,83,0.1)" stroke-width="0.5"/>
+          <line x1="121" y1="679" x2="142" y2="658" stroke="rgba(212,168,83,0.1)" stroke-width="0.5"/>
+          <line x1="679" y1="679" x2="658" y2="658" stroke="rgba(212,168,83,0.1)" stroke-width="0.5"/>
+          <!-- Direction labels -->
+          <text x="400" y="70" text-anchor="middle" fill="rgba(212,168,83,0.25)" font-size="14" font-family="Inter" font-weight="300" letter-spacing="4">N</text>
+          <text x="400" y="750" text-anchor="middle" fill="rgba(212,168,83,0.25)" font-size="14" font-family="Inter" font-weight="300" letter-spacing="4">S</text>
+          <text x="70" y="405" text-anchor="middle" fill="rgba(212,168,83,0.25)" font-size="14" font-family="Inter" font-weight="300" letter-spacing="4">W</text>
+          <text x="730" y="405" text-anchor="middle" fill="rgba(212,168,83,0.25)" font-size="14" font-family="Inter" font-weight="300" letter-spacing="4">E</text>
+        </svg>
+      </div>
+
+      <!-- Middle ring - counter spin -->
+      <div class="compass-ring compass-ring-middle">
+        <svg viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="300" cy="300" r="290" stroke="rgba(212,168,83,0.06)" stroke-width="0.5" stroke-dasharray="4 8"/>
+          <circle cx="300" cy="300" r="260" stroke="rgba(212,168,83,0.04)" stroke-width="0.5" stroke-dasharray="2 16"/>
+          <!-- Small tick marks every 30 degrees -->
+          <line x1="300" y1="10" x2="300" y2="30" stroke="rgba(212,168,83,0.12)" stroke-width="0.5"/>
+          <line x1="445" y1="37" x2="438" y2="55" stroke="rgba(212,168,83,0.08)" stroke-width="0.5"/>
+          <line x1="563" y1="155" x2="545" y2="162" stroke="rgba(212,168,83,0.08)" stroke-width="0.5"/>
+          <line x1="590" y1="300" x2="570" y2="300" stroke="rgba(212,168,83,0.12)" stroke-width="0.5"/>
+          <line x1="563" y1="445" x2="545" y2="438" stroke="rgba(212,168,83,0.08)" stroke-width="0.5"/>
+          <line x1="445" y1="563" x2="438" y2="545" stroke="rgba(212,168,83,0.08)" stroke-width="0.5"/>
+          <line x1="300" y1="590" x2="300" y2="570" stroke="rgba(212,168,83,0.12)" stroke-width="0.5"/>
+          <line x1="155" y1="563" x2="162" y2="545" stroke="rgba(212,168,83,0.08)" stroke-width="0.5"/>
+          <line x1="37" y1="445" x2="55" y2="438" stroke="rgba(212,168,83,0.08)" stroke-width="0.5"/>
+          <line x1="10" y1="300" x2="30" y2="300" stroke="rgba(212,168,83,0.12)" stroke-width="0.5"/>
+          <line x1="37" y1="155" x2="55" y2="162" stroke="rgba(212,168,83,0.08)" stroke-width="0.5"/>
+          <line x1="155" y1="37" x2="162" y2="55" stroke="rgba(212,168,83,0.08)" stroke-width="0.5"/>
+          <!-- Diagonal labels -->
+          <text x="510" y="110" text-anchor="middle" fill="rgba(212,168,83,0.15)" font-size="10" font-family="Inter" font-weight="300" letter-spacing="2">NE</text>
+          <text x="510" y="510" text-anchor="middle" fill="rgba(212,168,83,0.15)" font-size="10" font-family="Inter" font-weight="300" letter-spacing="2">SE</text>
+          <text x="90" y="510" text-anchor="middle" fill="rgba(212,168,83,0.15)" font-size="10" font-family="Inter" font-weight="300" letter-spacing="2">SW</text>
+          <text x="90" y="110" text-anchor="middle" fill="rgba(212,168,83,0.15)" font-size="10" font-family="Inter" font-weight="300" letter-spacing="2">NW</text>
+        </svg>
+      </div>
+
+      <!-- Inner ring - slow spin -->
+      <div class="compass-ring compass-ring-inner">
+        <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="200" cy="200" r="190" stroke="rgba(212,168,83,0.05)" stroke-width="0.5" stroke-dasharray="1 6"/>
+          <!-- Crosshair -->
+          <line x1="200" y1="20" x2="200" y2="80" stroke="rgba(212,168,83,0.08)" stroke-width="0.5"/>
+          <line x1="200" y1="320" x2="200" y2="380" stroke="rgba(212,168,83,0.08)" stroke-width="0.5"/>
+          <line x1="20" y1="200" x2="80" y2="200" stroke="rgba(212,168,83,0.08)" stroke-width="0.5"/>
+          <line x1="320" y1="200" x2="380" y2="200" stroke="rgba(212,168,83,0.08)" stroke-width="0.5"/>
+          <!-- Center dot -->
+          <circle cx="200" cy="200" r="3" fill="rgba(212,168,83,0.15)"/>
+          <circle cx="200" cy="200" r="8" stroke="rgba(212,168,83,0.08)" stroke-width="0.5"/>
+        </svg>
+      </div>
+    </div>
 
     <div class="hero-content">
       <div class="hero-badge reveal">
