@@ -381,17 +381,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroTitle = document.querySelector('.hero-title');
   const heroBadge = document.querySelector('.hero-badge');
   const heroStats = document.querySelector('.hero-stats');
-  const compassWrapper = document.querySelector('.compass-wrapper');
+  const compassWrapper = document.getElementById('compassWrapper');
 
   window.addEventListener('scroll', () => {
     const sy = window.scrollY;
     if (sy < window.innerHeight) {
       const factor = sy / window.innerHeight;
-      if (heroTitle) heroTitle.style.transform = `translateY(${sy * 0.15}px)`;
-      if (heroBadge) heroBadge.style.opacity = 1 - factor * 1.5;
-      if (heroStats) heroStats.style.transform = `translateY(${sy * 0.08}px)`;
-      if (compassWrapper) compassWrapper.style.transform = `translate(-50%, -50%) scale(${1 + factor * 0.2})`;
-      if (compassWrapper) compassWrapper.style.opacity = 1 - factor * 1.2;
+      if (heroTitle) heroTitle.style.transform = `translateY(${sy * 0.1}px)`;
+      if (heroBadge) heroBadge.style.opacity = 1 - factor * 1.8;
+      if (heroStats) heroStats.style.transform = `translateY(${sy * 0.05}px)`;
+      if (compassWrapper) {
+        compassWrapper.style.transform = `translate(-50%, -50%) scale(${1 + factor * 0.12})`;
+        compassWrapper.style.opacity = 1 - factor * 1.1;
+      }
     }
   }, { passive: true });
 

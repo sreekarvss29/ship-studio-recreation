@@ -317,23 +317,41 @@ a { color: inherit; text-decoration: none; }
   justify-content: center;
   position: relative;
   overflow: hidden;
-  padding: 120px 24px 80px;
+  padding: 80px 24px 40px;
 }
 
 .hero-grid-bg {
   display: none; /* replaced by full-page grid */
 }
 
-/* --- Compass Rings --- */
+/* --- Compass (large background behind all hero content) --- */
 .compass-wrapper {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: min(95vw, 900px);
-  height: min(95vw, 900px);
+  width: min(95vw, 800px);
+  height: min(95vw, 800px);
   z-index: 1;
   pointer-events: none;
+}
+
+/* Compass star (gold needles) */
+.compass-star {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  height: 90%;
+  animation: spin-cw 60s linear infinite;
+}
+
+.compass-star svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .compass-ring {
@@ -350,19 +368,13 @@ a { color: inherit; text-decoration: none; }
 .compass-ring-outer {
   width: 100%;
   height: 100%;
-  animation: spin-cw 60s linear infinite;
-}
-
-.compass-ring-middle {
-  width: 75%;
-  height: 75%;
-  animation: spin-ccw 45s linear infinite;
+  animation: spin-cw 90s linear infinite;
 }
 
 .compass-ring-inner {
-  width: 50%;
-  height: 50%;
-  animation: spin-cw 80s linear infinite;
+  width: 75%;
+  height: 75%;
+  animation: spin-ccw 70s linear infinite;
 }
 
 @keyframes spin-cw {
@@ -375,30 +387,106 @@ a { color: inherit; text-decoration: none; }
   to { transform: translate(-50%, -50%) rotate(-360deg); }
 }
 
+/* Direction labels (fixed, do NOT spin) */
+.compass-directions {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+.dir {
+  position: absolute;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: rgba(212, 168, 83, 0.5);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dir-n { top: 2%; left: 50%; transform: translateX(-50%); font-size: 15px; }
+.dir-s { bottom: 2%; left: 50%; transform: translateX(-50%); font-size: 15px; }
+.dir-w { top: 50%; left: 2%; transform: translateY(-50%); font-size: 15px; }
+.dir-e { top: 50%; right: 2%; transform: translateY(-50%); font-size: 15px; }
+.dir-ne { top: 14%; right: 14%; font-size: 12px; color: rgba(212,168,83,0.3); }
+.dir-nw { top: 14%; left: 14%; font-size: 12px; color: rgba(212,168,83,0.3); }
+.dir-se { bottom: 14%; right: 14%; font-size: 12px; color: rgba(212,168,83,0.3); }
+.dir-sw { bottom: 14%; left: 14%; font-size: 12px; color: rgba(212,168,83,0.3); }
+
+
+
 .hero-radial {
   position: absolute;
-  top: -20%;
+  top: -10%;
   left: 50%;
   transform: translateX(-50%);
-  width: 900px;
-  height: 900px;
+  width: 1000px;
+  height: 1000px;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--gold-glow) 0%, transparent 60%);
-  filter: blur(100px);
+  background: radial-gradient(circle, rgba(212, 168, 83, 0.12) 0%, rgba(212, 168, 83, 0.04) 40%, transparent 65%);
+  filter: blur(60px);
   animation: breathe 8s ease-in-out infinite;
-  opacity: 0.2;
+  opacity: 0.5;
 }
 
 @keyframes breathe {
-  0%, 100% { opacity: 0.15; transform: translateX(-50%) scale(1); }
-  50% { opacity: 0.3; transform: translateX(-50%) scale(1.05); }
+  0%, 100% { opacity: 0.4; transform: translateX(-50%) scale(1); }
+  50% { opacity: 0.6; transform: translateX(-50%) scale(1.08); }
 }
 
 .hero-content {
   text-align: center;
   position: relative;
-  z-index: 2;
+  z-index: 10;
   max-width: 800px;
+}
+
+/* Ship logo — large serif centered */
+.hero-ship-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+  cursor: default;
+  position: relative;
+}
+
+.hero-ship-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(90px, 22vw, 200px);
+  line-height: 0.85;
+  letter-spacing: -3px;
+  color: #ffffff;
+  transition: text-shadow 0.5s ease;
+}
+
+.hero-ship-cohort {
+  font-family: 'Inter', sans-serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 15px;
+  letter-spacing: 8px;
+  color: rgba(212, 168, 83, 0.45);
+  text-transform: uppercase;
+  margin-top: 4px;
+  transition: all 0.5s ease;
+}
+
+/* Hover: white text stays, intense golden glow behind */
+.hero-ship-logo:hover .hero-ship-text {
+  text-shadow:
+    0 0 20px rgba(232, 201, 122, 1),
+    0 0 50px rgba(212, 168, 83, 0.95),
+    0 0 100px rgba(212, 168, 83, 0.7),
+    0 0 160px rgba(212, 168, 83, 0.5),
+    0 0 250px rgba(212, 168, 83, 0.3),
+    0 0 350px rgba(212, 168, 83, 0.15);
+}
+
+.hero-ship-logo:hover .hero-ship-cohort {
+  color: rgba(212, 168, 83, 0.8);
+  text-shadow: 0 0 20px rgba(212, 168, 83, 0.3);
 }
 
 .hero-badge {
@@ -413,7 +501,7 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--text-secondary);
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
@@ -432,11 +520,11 @@ a { color: inherit; text-decoration: none; }
 }
 
 .hero-title {
-  font-size: clamp(42px, 7vw, 84px);
+  font-size: clamp(42px, 7vw, 80px);
   font-weight: 300;
   line-height: 1.08;
   letter-spacing: -2px;
-  margin-bottom: 28px;
+  margin-bottom: 12px;
 }
 
 .title-line {
@@ -451,11 +539,11 @@ a { color: inherit; text-decoration: none; }
 }
 
 .hero-sub {
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.7;
   color: var(--text-secondary);
   max-width: 520px;
-  margin: 0 auto 40px;
+  margin: 0 auto 28px;
   font-weight: 300;
 }
 
@@ -464,7 +552,7 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   justify-content: center;
   gap: 16px;
-  margin-bottom: 60px;
+  margin-bottom: 28px;
   flex-wrap: wrap;
 }
 
@@ -1150,8 +1238,8 @@ blockquote {
     grid-template-columns: repeat(2, 1fr);
   }
   .compass-wrapper {
-    width: min(95vw, 700px);
-    height: min(95vw, 700px);
+    width: min(95vw, 650px);
+    height: min(95vw, 650px);
   }
 }
 
