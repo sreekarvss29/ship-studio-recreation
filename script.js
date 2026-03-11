@@ -325,13 +325,20 @@ document.addEventListener('DOMContentLoaded', () => {
     function drawGoldLine() {
       if (cachedCenters.length < 2) return;
 
-      const secRect = manifestoSec.getBoundingClientRect();
       const wh = window.innerHeight;
+      const secTop = manifestoSec.getBoundingClientRect().top + window.scrollY;
 
-      // Scroll progress through the manifesto section (0 to 1)
-      const scrolled = wh - secRect.top;
-      const total = secRect.height + wh;
-      const progress = Math.max(0, Math.min(1, scrolled / total));
+      // Progress: 0 when first illustration enters viewport, 1 when last illustration is centered
+      const firstIllY = secTop + cachedCenters[0].y;
+      const lastIllY = secTop + cachedCenters[cachedCenters.length - 1].y;
+
+      // Start when first illustration is near center of viewport
+      const startScroll = firstIllY - wh * 0.7;
+      // End when last illustration reaches center of viewport
+      const endScroll = lastIllY - wh * 0.4;
+
+      const currentScroll = window.scrollY;
+      const progress = Math.max(0, Math.min(1, (currentScroll - startScroll) / (endScroll - startScroll)));
 
       // Segment lengths between consecutive illustration centers
       let totalLen = 0;
