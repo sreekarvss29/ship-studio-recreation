@@ -13,13 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const NET_CONFIG = {
     particleCount: 180,
-    connectionDistance: 200,
-    mouseRadius: 280,
-    particleSize: { min: 1.2, max: 3.2 },
+    connectionDistance: 180,
+    mouseRadius: 200,
+    particleSize: { min: 1, max: 2.5 },
     speed: { min: 0.08, max: 0.35 },
-    baseAlpha: 0.6,
-    lineAlpha: 0.22,
-    mouseLineAlpha: 0.5,
+    baseAlpha: 0.45,
+    lineAlpha: 0.15,
+    mouseLineAlpha: 0.2,
     pulseSpeed: 0.001,
     colors: {
       particle: [212, 168, 83],
@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const dist = Math.sqrt(dx * dx + dy * dy);
 
       if (dist < NET_CONFIG.mouseRadius) {
-        const alpha = (1 - dist / NET_CONFIG.mouseRadius) * 0.4;
+        const alpha = (1 - dist / NET_CONFIG.mouseRadius) * 0.15;
         const c = NET_CONFIG.colors.mouseLine;
         ctx.beginPath();
         ctx.moveTo(networkMouse.x, networkMouse.y);
@@ -396,10 +396,11 @@ document.addEventListener('DOMContentLoaded', () => {
       lineCtx.stroke();
       lineCtx.restore();
 
-      // Glowing dots at reached illustration centers
+      // Glowing dots at reached illustration centers + activate illustrations
       let distSoFar = 0;
       for (let i = 0; i < cachedCenters.length; i++) {
-        if (drawLen >= distSoFar) {
+        const reached = drawLen >= distSoFar;
+        if (reached) {
           const glow = Math.min(1, (drawLen - distSoFar) / 80);
           // Outer glow
           lineCtx.beginPath();
@@ -411,6 +412,14 @@ document.addEventListener('DOMContentLoaded', () => {
           lineCtx.arc(cachedCenters[i].x, cachedCenters[i].y, 4, 0, Math.PI * 2);
           lineCtx.fillStyle = `rgba(232, 201, 122, ${0.9 * glow})`;
           lineCtx.fill();
+        }
+        // Activate/deactivate illustration glow based on line progress
+        if (illustrations[i]) {
+          if (reached) {
+            illustrations[i].classList.add('ill-active');
+          } else {
+            illustrations[i].classList.remove('ill-active');
+          }
         }
         if (i < segs.length) distSoFar += segs[i];
       }
