@@ -1,6 +1,6 @@
 /* =============================================
    SHIP STUDIO — Animations & Interactions
-   Full-page network + compass + glassmorphism
+   Faithful recreation of ship-studio.co
    ============================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const ctx = canvas.getContext('2d');
   let canvasW, canvasH;
   let networkMouse = { x: -9999, y: -9999 };
-  let scrollY = 0;
 
   const NET_CONFIG = {
     particleCount: 160,
@@ -61,13 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
       this.x += this.speedX;
       this.y += this.speedY;
 
-      // Wrap around edges
       if (this.x < -50) this.x = canvasW + 50;
       if (this.x > canvasW + 50) this.x = -50;
       if (this.y < -50) this.y = canvasH + 50;
       if (this.y > canvasH + 50) this.y = -50;
 
-      // Mouse repulsion
       const dx = this.x - networkMouse.x;
       const dy = this.y - networkMouse.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
@@ -95,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const alpha = this.alpha + mouseInfluence * 0.5;
       const size = this.size + mouseInfluence * 1.8;
 
-      // Glow for particles near mouse
       if (mouseInfluence > 0.2) {
         ctx.beginPath();
         ctx.arc(this.x, this.y, size * 4, 0, Math.PI * 2);
@@ -126,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (dist < NET_CONFIG.connectionDistance) {
           const alpha = (1 - dist / NET_CONFIG.connectionDistance);
-
           const midX = (particles[i].x + particles[j].x) / 2;
           const midY = (particles[i].y + particles[j].y) / 2;
           const mouseDistToLine = Math.sqrt(
@@ -152,7 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Lines from mouse to nearby particles
     for (let i = 0; i < particles.length; i++) {
       const dx = particles[i].x - networkMouse.x;
       const dy = particles[i].y - networkMouse.y;
@@ -173,15 +167,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function animateNetwork(time) {
     ctx.clearRect(0, 0, canvasW, canvasH);
-
     particles.forEach(p => p.update(time));
     drawConnections();
     particles.forEach(p => p.draw());
-
     requestAnimationFrame(animateNetwork);
   }
 
-  // Track mouse position (viewport coords since canvas is fixed)
   document.addEventListener('mousemove', (e) => {
     networkMouse.x = e.clientX;
     networkMouse.y = e.clientY;
@@ -191,10 +182,6 @@ document.addEventListener('DOMContentLoaded', () => {
     networkMouse.x = -9999;
     networkMouse.y = -9999;
   });
-
-  window.addEventListener('scroll', () => {
-    scrollY = window.scrollY;
-  }, { passive: true });
 
   window.addEventListener('resize', () => {
     resizeCanvas();
@@ -234,14 +221,41 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   animateGlow();
 
-  // --- Navbar scroll ---
+  // --- Navbar scroll + active section ---
   const nav = document.getElementById('nav');
+  const navLinks = document.querySelectorAll('.nav-link[data-section]');
+  const navSeason = document.querySelector('.nav-season');
+  const sections = document.querySelectorAll('[id]');
 
   window.addEventListener('scroll', () => {
+    // Scrolled state
     if (window.scrollY > 60) {
       nav.classList.add('scrolled');
     } else {
       nav.classList.remove('scrolled');
+    }
+
+    // Active section highlighting
+    let currentSection = '';
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= 200 && rect.bottom > 200) {
+        currentSection = section.id;
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.dataset.section === currentSection) {
+        link.classList.add('active');
+      }
+    });
+
+    // Gold season text when scrolled past hero
+    if (window.scrollY > window.innerHeight * 0.5) {
+      navSeason.classList.add('active');
+    } else {
+      navSeason.classList.remove('active');
     }
   }, { passive: true });
 
@@ -280,75 +294,134 @@ document.addEventListener('DOMContentLoaded', () => {
 
   revealElements.forEach(el => revealObserver.observe(el));
 
-  // --- Animated Counters ---
-  const statNums = document.querySelectorAll('.stat-num');
-  let countersAnimated = false;
+  // --- Gold connecting line: canvas draws between the 4 illustrations on scroll ---
+  const lineCanvas = document.getElementById('manifestoLineCanvas');
+  const manifestoSec = document.querySelector('.manifesto-section');
+  const illustrations = document.querySelectorAll('.ms-illustration');
 
-  const counterObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !countersAnimated) {
-        countersAnimated = true;
-        animateCounters();
+  if (lineCanvas && manifestoSec && illustrations.length >= 2) {
+    const lineCtx = lineCanvas.getContext('2d');
+    let cachedCenters = [];
+
+    function setupLineCanvas() {
+      // Set canvas to cover the full manifesto section
+      lineCanvas.width = manifestoSec.scrollWidth;
+      lineCanvas.height = manifestoSec.scrollHeight;
+
+      // Compute illustration centers relative to the manifesto section
+      cachedCenters = [];
+      const secTop = manifestoSec.getBoundingClientRect().top + window.scrollY;
+      const secLeft = manifestoSec.getBoundingClientRect().left;
+
+      illustrations.forEach(ill => {
+        const r = ill.getBoundingClientRect();
+        cachedCenters.push({
+          x: r.left - secLeft + r.width / 2,
+          y: (r.top + window.scrollY) - secTop + r.height / 2
+        });
+      });
+    }
+
+    function drawGoldLine() {
+      if (cachedCenters.length < 2) return;
+
+      const secRect = manifestoSec.getBoundingClientRect();
+      const wh = window.innerHeight;
+
+      // Scroll progress through the manifesto section (0 to 1)
+      const scrolled = wh - secRect.top;
+      const total = secRect.height + wh;
+      const progress = Math.max(0, Math.min(1, scrolled / total));
+
+      // Segment lengths between consecutive illustration centers
+      let totalLen = 0;
+      const segs = [];
+      for (let i = 0; i < cachedCenters.length - 1; i++) {
+        const dx = cachedCenters[i + 1].x - cachedCenters[i].x;
+        const dy = cachedCenters[i + 1].y - cachedCenters[i].y;
+        const len = Math.sqrt(dx * dx + dy * dy);
+        segs.push(len);
+        totalLen += len;
       }
-    });
-  }, { threshold: 0.5 });
 
-  if (statNums.length) {
-    counterObserver.observe(statNums[0].parentElement);
-  }
+      const drawLen = progress * totalLen;
 
-  function animateCounters() {
-    statNums.forEach(num => {
-      const target = parseInt(num.dataset.count);
-      const duration = 1500;
-      const startTime = performance.now();
+      // Clear
+      lineCtx.clearRect(0, 0, lineCanvas.width, lineCanvas.height);
+      if (drawLen <= 0) return;
 
-      function updateCount(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        const current = Math.round(eased * target);
-        num.textContent = current;
-        if (progress < 1) {
-          requestAnimationFrame(updateCount);
+      // Draw progressive line
+      lineCtx.save();
+      lineCtx.beginPath();
+      lineCtx.moveTo(cachedCenters[0].x, cachedCenters[0].y);
+
+      let drawn = 0;
+      for (let i = 0; i < segs.length; i++) {
+        const remaining = drawLen - drawn;
+        if (remaining <= 0) break;
+
+        if (remaining >= segs[i]) {
+          lineCtx.lineTo(cachedCenters[i + 1].x, cachedCenters[i + 1].y);
+          drawn += segs[i];
+        } else {
+          const t = remaining / segs[i];
+          lineCtx.lineTo(
+            cachedCenters[i].x + (cachedCenters[i + 1].x - cachedCenters[i].x) * t,
+            cachedCenters[i].y + (cachedCenters[i + 1].y - cachedCenters[i].y) * t
+          );
+          break;
         }
       }
-      requestAnimationFrame(updateCount);
+
+      // Main gold stroke
+      lineCtx.strokeStyle = 'rgba(212, 168, 83, 0.85)';
+      lineCtx.lineWidth = 2.5;
+      lineCtx.lineCap = 'round';
+      lineCtx.lineJoin = 'round';
+      lineCtx.shadowColor = 'rgba(212, 168, 83, 0.5)';
+      lineCtx.shadowBlur = 20;
+      lineCtx.stroke();
+
+      // Brighter core
+      lineCtx.strokeStyle = 'rgba(232, 201, 122, 0.6)';
+      lineCtx.lineWidth = 1;
+      lineCtx.shadowBlur = 0;
+      lineCtx.stroke();
+      lineCtx.restore();
+
+      // Glowing dots at reached illustration centers
+      let distSoFar = 0;
+      for (let i = 0; i < cachedCenters.length; i++) {
+        if (drawLen >= distSoFar) {
+          const glow = Math.min(1, (drawLen - distSoFar) / 80);
+          // Outer glow
+          lineCtx.beginPath();
+          lineCtx.arc(cachedCenters[i].x, cachedCenters[i].y, 18, 0, Math.PI * 2);
+          lineCtx.fillStyle = `rgba(212, 168, 83, ${0.2 * glow})`;
+          lineCtx.fill();
+          // Dot
+          lineCtx.beginPath();
+          lineCtx.arc(cachedCenters[i].x, cachedCenters[i].y, 4, 0, Math.PI * 2);
+          lineCtx.fillStyle = `rgba(232, 201, 122, ${0.9 * glow})`;
+          lineCtx.fill();
+        }
+        if (i < segs.length) distSoFar += segs[i];
+      }
+    }
+
+    // Initial setup after layout settles
+    setTimeout(() => {
+      setupLineCanvas();
+      drawGoldLine();
+    }, 200);
+
+    window.addEventListener('resize', () => {
+      setupLineCanvas();
+      drawGoldLine();
     });
+
+    window.addEventListener('scroll', drawGoldLine, { passive: true });
   }
-
-  // --- Testimonial Carousel ---
-  const testimonials = document.querySelectorAll('.testimonial-card');
-  const dots = document.querySelectorAll('.dot');
-  let currentTestimonial = 0;
-  let autoplayInterval;
-
-  function showTestimonial(index) {
-    testimonials.forEach(t => t.classList.remove('active'));
-    dots.forEach(d => d.classList.remove('active'));
-    testimonials[index].classList.add('active');
-    dots[index].classList.add('active');
-    currentTestimonial = index;
-  }
-
-  dots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      showTestimonial(parseInt(dot.dataset.index));
-      resetAutoplay();
-    });
-  });
-
-  function nextTestimonial() {
-    const next = (currentTestimonial + 1) % testimonials.length;
-    showTestimonial(next);
-  }
-
-  function resetAutoplay() {
-    clearInterval(autoplayInterval);
-    autoplayInterval = setInterval(nextTestimonial, 5000);
-  }
-
-  resetAutoplay();
 
   // --- Smooth Scroll for Nav Links ---
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -363,33 +436,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- Magnetic Buttons ---
-  document.querySelectorAll('.btn-primary').forEach(btn => {
-    btn.addEventListener('mousemove', (e) => {
-      const rect = btn.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-      btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
-    });
-
-    btn.addEventListener('mouseleave', () => {
-      btn.style.transform = '';
-    });
-  });
-
-  // --- Parallax on Hero Elements ---
-  const heroTitle = document.querySelector('.hero-title');
-  const heroBadge = document.querySelector('.hero-badge');
-  const heroStats = document.querySelector('.hero-stats');
+  // --- Parallax on Hero compass ---
   const compassWrapper = document.getElementById('compassWrapper');
 
   window.addEventListener('scroll', () => {
     const sy = window.scrollY;
     if (sy < window.innerHeight) {
       const factor = sy / window.innerHeight;
-      if (heroTitle) heroTitle.style.transform = `translateY(${sy * 0.1}px)`;
-      if (heroBadge) heroBadge.style.opacity = 1 - factor * 1.8;
-      if (heroStats) heroStats.style.transform = `translateY(${sy * 0.05}px)`;
       if (compassWrapper) {
         compassWrapper.style.transform = `translate(-50%, -50%) scale(${1 + factor * 0.12})`;
         compassWrapper.style.opacity = 1 - factor * 1.1;
@@ -397,29 +450,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { passive: true });
 
-  // --- Timeline line animation on scroll ---
-  const timelineLine = document.querySelector('.timeline-line');
-  if (timelineLine) {
-    const timelineSection = document.querySelector('.timeline');
-
+  // --- Program timeline line animation ---
+  const ptLine = document.querySelector('.pt-line');
+  if (ptLine) {
+    const programSection = document.querySelector('.program-timeline');
     window.addEventListener('scroll', () => {
-      const rect = timelineSection.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-
-      if (rect.top < windowHeight && rect.bottom > 0) {
-        const progress = Math.min(1, (windowHeight - rect.top) / (windowHeight + rect.height));
-        timelineLine.style.background = `linear-gradient(to bottom, var(--gold) ${progress * 100}%, var(--border) ${progress * 100}%, transparent)`;
+      const rect = programSection.getBoundingClientRect();
+      const wh = window.innerHeight;
+      if (rect.top < wh && rect.bottom > 0) {
+        const progress = Math.min(1, (wh - rect.top) / (wh + rect.height));
+        ptLine.style.background = `linear-gradient(to bottom, var(--gold) ${progress * 100}%, rgba(212, 168, 83, 0.15) ${progress * 100}%, transparent)`;
       }
     }, { passive: true });
   }
 
-  // --- Card tilt effect ---
-  document.querySelectorAll('.about-card, .founder-card').forEach(card => {
+  // --- Card hover effects ---
+  document.querySelectorAll('.mentor-card, .faq-card').forEach(card => {
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
-      card.style.transform = `translateY(-4px) perspective(800px) rotateX(${-y * 5}deg) rotateY(${x * 5}deg)`;
+      card.style.transform = `perspective(800px) rotateX(${-y * 3}deg) rotateY(${x * 3}deg)`;
     });
 
     card.addEventListener('mouseleave', () => {
@@ -427,10 +478,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- Text split animation for hero ---
-  const titleLines = document.querySelectorAll('.title-line');
-  titleLines.forEach((line, i) => {
-    line.style.transitionDelay = `${0.3 + i * 0.15}s`;
-  });
+  // --- Manifesto illustrations glow on scroll ---
+  const manifestoIllustrations = document.querySelectorAll('.ms-illustration');
+  const illustrationObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('glowing');
+      } else {
+        entry.target.classList.remove('glowing');
+      }
+    });
+  }, { threshold: 0.5 });
+
+  manifestoIllustrations.forEach(el => illustrationObserver.observe(el));
 
 });
