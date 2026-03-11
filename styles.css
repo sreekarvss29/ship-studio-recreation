@@ -485,19 +485,19 @@ a { color: inherit; text-decoration: none; }
 .dir {
   position: absolute;
   font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  letter-spacing: 2px;
-  color: rgba(212, 168, 83, 0.5);
+  font-weight: 500;
+  letter-spacing: 3px;
+  color: rgba(212, 168, 83, 0.7);
 }
 
-.dir-n { top: 2%; left: 50%; transform: translateX(-50%); font-size: 16px; color: rgba(212,168,83,0.7); }
-.dir-s { bottom: 2%; left: 50%; transform: translateX(-50%); font-size: 16px; color: rgba(212,168,83,0.7); }
-.dir-w { top: 50%; left: 2%; transform: translateY(-50%); font-size: 16px; }
-.dir-e { top: 50%; right: 2%; transform: translateY(-50%); font-size: 16px; }
-.dir-ne { top: 14%; right: 14%; font-size: 12px; color: rgba(212,168,83,0.3); }
-.dir-nw { top: 14%; left: 14%; font-size: 12px; color: rgba(212,168,83,0.3); }
-.dir-se { bottom: 14%; right: 14%; font-size: 12px; color: rgba(212,168,83,0.3); }
-.dir-sw { bottom: 14%; left: 14%; font-size: 12px; color: rgba(212,168,83,0.3); }
+.dir-n { top: 1%; left: 50%; transform: translateX(-50%); font-size: 18px; color: #d4a853; text-shadow: 0 0 12px rgba(212,168,83,0.5); }
+.dir-s { bottom: 1%; left: 50%; transform: translateX(-50%); font-size: 18px; color: #d4a853; text-shadow: 0 0 12px rgba(212,168,83,0.5); }
+.dir-w { top: 50%; left: 1%; transform: translateY(-50%); font-size: 18px; color: #d4a853; text-shadow: 0 0 12px rgba(212,168,83,0.5); }
+.dir-e { top: 50%; right: 1%; transform: translateY(-50%); font-size: 18px; color: #d4a853; text-shadow: 0 0 12px rgba(212,168,83,0.5); }
+.dir-ne { top: 13%; right: 13%; font-size: 13px; color: rgba(255,255,255,0.35); }
+.dir-nw { top: 13%; left: 13%; font-size: 13px; color: rgba(255,255,255,0.35); }
+.dir-se { bottom: 13%; right: 13%; font-size: 13px; color: rgba(255,255,255,0.35); }
+.dir-sw { bottom: 13%; left: 13%; font-size: 13px; color: rgba(255,255,255,0.35); }
 
 /* Hero content */
 .hero-content {

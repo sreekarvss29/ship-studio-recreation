@@ -12,14 +12,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let networkMouse = { x: -9999, y: -9999 };
 
   const NET_CONFIG = {
-    particleCount: 160,
-    connectionDistance: 180,
-    mouseRadius: 250,
-    particleSize: { min: 1, max: 2.8 },
+    particleCount: 180,
+    connectionDistance: 200,
+    mouseRadius: 280,
+    particleSize: { min: 1.2, max: 3.2 },
     speed: { min: 0.08, max: 0.35 },
-    baseAlpha: 0.4,
-    lineAlpha: 0.12,
-    mouseLineAlpha: 0.35,
+    baseAlpha: 0.6,
+    lineAlpha: 0.22,
+    mouseLineAlpha: 0.5,
     pulseSpeed: 0.001,
     colors: {
       particle: [212, 168, 83],
@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const dist = Math.sqrt(dx * dx + dy * dy);
 
       if (dist < NET_CONFIG.mouseRadius) {
-        const alpha = (1 - dist / NET_CONFIG.mouseRadius) * 0.25;
+        const alpha = (1 - dist / NET_CONFIG.mouseRadius) * 0.4;
         const c = NET_CONFIG.colors.mouseLine;
         ctx.beginPath();
         ctx.moveTo(networkMouse.x, networkMouse.y);

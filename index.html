@@ -160,49 +160,61 @@
         <svg viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="starGoldV" x1="400" y1="0" x2="400" y2="800" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#d4a853" stop-opacity="0.9"/>
-              <stop offset="40%" stop-color="#d4a853" stop-opacity="0.15"/>
-              <stop offset="50%" stop-color="#d4a853" stop-opacity="0"/>
-              <stop offset="60%" stop-color="#d4a853" stop-opacity="0.15"/>
-              <stop offset="100%" stop-color="#d4a853" stop-opacity="0.9"/>
+              <stop offset="0%" stop-color="#e8c97a" stop-opacity="1"/>
+              <stop offset="30%" stop-color="#d4a853" stop-opacity="0.6"/>
+              <stop offset="45%" stop-color="#d4a853" stop-opacity="0.2"/>
+              <stop offset="50%" stop-color="#d4a853" stop-opacity="0.05"/>
+              <stop offset="55%" stop-color="#d4a853" stop-opacity="0.2"/>
+              <stop offset="70%" stop-color="#d4a853" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="#e8c97a" stop-opacity="1"/>
             </linearGradient>
             <linearGradient id="starGoldH" x1="0" y1="400" x2="800" y2="400" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#d4a853" stop-opacity="0.9"/>
-              <stop offset="40%" stop-color="#d4a853" stop-opacity="0.15"/>
-              <stop offset="50%" stop-color="#d4a853" stop-opacity="0"/>
-              <stop offset="60%" stop-color="#d4a853" stop-opacity="0.15"/>
-              <stop offset="100%" stop-color="#d4a853" stop-opacity="0.9"/>
+              <stop offset="0%" stop-color="#e8c97a" stop-opacity="1"/>
+              <stop offset="30%" stop-color="#d4a853" stop-opacity="0.6"/>
+              <stop offset="45%" stop-color="#d4a853" stop-opacity="0.2"/>
+              <stop offset="50%" stop-color="#d4a853" stop-opacity="0.05"/>
+              <stop offset="55%" stop-color="#d4a853" stop-opacity="0.2"/>
+              <stop offset="70%" stop-color="#d4a853" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="#e8c97a" stop-opacity="1"/>
             </linearGradient>
             <filter id="starGlow">
-              <feGaussianBlur stdDeviation="3" result="blur"/>
+              <feGaussianBlur stdDeviation="4" result="blur"/>
               <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
           </defs>
-          <polygon points="400,30 408,380 400,400 392,380" fill="url(#starGoldV)" filter="url(#starGlow)"/>
-          <polygon points="400,770 408,420 400,400 392,420" fill="url(#starGoldV)" filter="url(#starGlow)"/>
-          <polygon points="30,400 380,392 400,400 380,408" fill="url(#starGoldH)" filter="url(#starGlow)"/>
-          <polygon points="770,400 420,392 400,400 420,408" fill="url(#starGoldH)" filter="url(#starGlow)"/>
-          <polygon points="138,138 385,395 400,400 395,385" fill="rgba(212,168,83,0.12)"/>
-          <polygon points="662,138 405,385 400,400 415,395" fill="rgba(212,168,83,0.12)"/>
-          <polygon points="138,662 385,405 400,400 395,415" fill="rgba(212,168,83,0.12)"/>
-          <polygon points="662,662 415,405 400,400 405,415" fill="rgba(212,168,83,0.12)"/>
-          <polygon points="400,385 415,400 400,415 385,400" fill="rgba(212,168,83,0.3)" stroke="rgba(212,168,83,0.5)" stroke-width="0.5"/>
+          <!-- Main cardinal needles (N/S/E/W) — bright gold -->
+          <polygon points="400,20 410,375 400,400 390,375" fill="url(#starGoldV)" filter="url(#starGlow)"/>
+          <polygon points="400,780 410,425 400,400 390,425" fill="url(#starGoldV)" filter="url(#starGlow)"/>
+          <polygon points="20,400 375,390 400,400 375,410" fill="url(#starGoldH)" filter="url(#starGlow)"/>
+          <polygon points="780,400 425,390 400,400 425,410" fill="url(#starGoldH)" filter="url(#starGlow)"/>
+          <!-- Bright outline strokes on needles -->
+          <polygon points="400,20 410,375 400,400 390,375" fill="none" stroke="rgba(232,201,122,0.5)" stroke-width="0.5"/>
+          <polygon points="400,780 410,425 400,400 390,425" fill="none" stroke="rgba(232,201,122,0.5)" stroke-width="0.5"/>
+          <polygon points="20,400 375,390 400,400 375,410" fill="none" stroke="rgba(232,201,122,0.5)" stroke-width="0.5"/>
+          <polygon points="780,400 425,390 400,400 425,410" fill="none" stroke="rgba(232,201,122,0.5)" stroke-width="0.5"/>
+          <!-- Intercardinal needles — subtle -->
+          <polygon points="138,138 385,395 400,400 395,385" fill="rgba(212,168,83,0.18)"/>
+          <polygon points="662,138 405,385 400,400 415,395" fill="rgba(212,168,83,0.18)"/>
+          <polygon points="138,662 385,405 400,400 395,415" fill="rgba(212,168,83,0.18)"/>
+          <polygon points="662,662 415,405 400,400 405,415" fill="rgba(212,168,83,0.18)"/>
+          <!-- Center diamond -->
+          <polygon points="400,382 418,400 400,418 382,400" fill="rgba(212,168,83,0.4)" stroke="rgba(232,201,122,0.7)" stroke-width="0.8"/>
         </svg>
       </div>
 
       <div class="compass-ring compass-ring-outer">
         <svg viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="400" cy="400" r="390" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-          <circle cx="400" cy="400" r="385" stroke="rgba(255,255,255,0.06)" stroke-width="0.5" stroke-dasharray="4 6"/>
-          <circle cx="400" cy="400" r="360" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
-          <line x1="400" y1="5" x2="400" y2="40" stroke="rgba(212,168,83,0.5)" stroke-width="1.5"/>
-          <line x1="400" y1="760" x2="400" y2="795" stroke="rgba(212,168,83,0.5)" stroke-width="1.5"/>
-          <line x1="5" y1="400" x2="40" y2="400" stroke="rgba(212,168,83,0.5)" stroke-width="1.5"/>
-          <line x1="760" y1="400" x2="795" y2="400" stroke="rgba(212,168,83,0.5)" stroke-width="1.5"/>
-          <line x1="118" y1="118" x2="140" y2="140" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
-          <line x1="682" y1="118" x2="660" y2="140" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
-          <line x1="118" y1="682" x2="140" y2="660" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
-          <line x1="682" y1="682" x2="660" y2="660" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+          <circle cx="400" cy="400" r="390" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+          <circle cx="400" cy="400" r="385" stroke="rgba(255,255,255,0.08)" stroke-width="0.5" stroke-dasharray="4 6"/>
+          <circle cx="400" cy="400" r="360" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+          <line x1="400" y1="5" x2="400" y2="40" stroke="rgba(232,201,122,0.8)" stroke-width="1.5"/>
+          <line x1="400" y1="760" x2="400" y2="795" stroke="rgba(232,201,122,0.8)" stroke-width="1.5"/>
+          <line x1="5" y1="400" x2="40" y2="400" stroke="rgba(232,201,122,0.8)" stroke-width="1.5"/>
+          <line x1="760" y1="400" x2="795" y2="400" stroke="rgba(232,201,122,0.8)" stroke-width="1.5"/>
+          <line x1="118" y1="118" x2="140" y2="140" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+          <line x1="682" y1="118" x2="660" y2="140" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+          <line x1="118" y1="682" x2="140" y2="660" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+          <line x1="682" y1="682" x2="660" y2="660" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
         </svg>
       </div>
 
@@ -219,8 +231,8 @@
 
       <div class="compass-ring compass-ring-inner">
         <svg viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="300" cy="300" r="290" stroke="rgba(255,255,255,0.06)" stroke-width="0.5" stroke-dasharray="3 8"/>
-          <circle cx="300" cy="300" r="250" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
+          <circle cx="300" cy="300" r="290" stroke="rgba(255,255,255,0.10)" stroke-width="0.5" stroke-dasharray="3 8"/>
+          <circle cx="300" cy="300" r="250" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
         </svg>
       </div>
     </div>
